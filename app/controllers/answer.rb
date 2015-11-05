@@ -27,6 +27,7 @@ end
 #edit answer
 get "/answers/:id/edit" do
 	@answer = Answer.find_by(id: params[:id])
+	@question = @answer.question
 	erb :'answers/edit'
 
 end
