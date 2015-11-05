@@ -9,8 +9,16 @@
 	<input type="submit" value="Delete">
 </form>
 
-<form action="/questions/1/answers/new" method="get">
+<form action="/questions/<%= @question.id %>/answers/new" method="get">
 	<input type="submit" value="Answer this question">
 </form>
+
+<% @answers.each_with_index do |a, index| %>
+    <p><%= "#{index + 1})  #{a.body}" %></p>
+<% end %>
+
+
+
+
 
 

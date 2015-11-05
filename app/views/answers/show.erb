@@ -1,0 +1,19 @@
+<h1><a href="/questions/<%= @question.id%>">Question: <%= @question.body %></h1></a>
+
+<h2>Answer:</h2>
+
+<div>
+
+<h3><%= @answer.body %></h3>
+
+</div>
+
+
+<form action="/answers/<%= @answer.id %>/edit" method="GET">
+<input type="submit" value="Edit">
+</form>
+
+<form action="/answers/<%= @answer.id %>" method="post">
+	<input type="hidden" name="_method" value="delete">
+	<input type="submit" value="Delete">
+</form>

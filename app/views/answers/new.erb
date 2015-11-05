@@ -1,1 +1,8 @@
-<p1> this is to create new answer</p1>
+<h1><%=@question.body %></h1>
+
+<h2>Answer:</h2>
+
+<form action="/questions/<%= @question.id %>/answers" method="post">
+	<textarea name="body" row="5" cols="30"></textarea>
+	<input type="submit" value="Submit Answer">
+</form>
