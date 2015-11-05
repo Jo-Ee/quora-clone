@@ -1,2 +1,21 @@
-<h1>Hello World</h1>
-<p>See Me in views/static/index.html.erb</p>
+<% if session[:user_id].nil? %>
+	<h1>Welcome to Quora Clone! Please sign up or login.</h1>
+		<a href ="/signup">Sign Up!</a>
+		<a href ="/login">Log In!</a>
+<% else %>
+  <h3>Hello <%= @user.username %> </h3>
+  	<form action="/logout" method="post">
+		<input type="submit" value="Logout">
+	</form>
+<% end %>
+
+<a href="/questions/new">Create a new question</a>
+
+<h2>Latest Questions!</h2>
+
+<% @question.each_with_index do |q, index| %>
+  <a href="/questions/<%= q.id %>">
+    <p><%= "#{index + 1})  #{q.body}" %></p>
+  </a>
+<% end %>
+

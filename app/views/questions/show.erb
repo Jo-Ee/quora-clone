@@ -1,0 +1,16 @@
+<h3><%= @question.body %></h3>
+
+<form action="/questions/<%= @question.id %>/edit" method="GET">
+<input type="submit" value="Edit">
+</form>
+
+<form action="/questions/<%= @question.id %>" method="post">
+	<input type="hidden" name="_method" value="delete">
+	<input type="submit" value="Delete">
+</form>
+
+<form action="/questions/1/answers/new" method="get">
+	<input type="submit" value="Answer this question">
+</form>
+
+
