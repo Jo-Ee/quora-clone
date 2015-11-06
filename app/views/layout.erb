@@ -24,11 +24,15 @@
 
 <% if user_logged_in? %>
   <% @user = current_user %>
-  <h4><%= @user.username %></h4>
+  <h2>Welcome to Quora Clone, <%= @user.username %></h2>
+
       <form action="/logout" method="post">
       <input type="hidden" name="_method" value="delete">
       <input type="submit" value="Logout">
     </form>
+
+      <form action="/questions/new">
+      <input type="submit" value="Got question? Ask here!">
 
 <% end %>
   <%= yield %>

@@ -21,19 +21,23 @@
 
 
 <% @answers.each_with_index do |a, index| %>
-    <p><%= "#{index + 1})  #{a.body}" %></p>
 
-	<% if a.user_id == current_user.id %>
+	<% if !session[:user_id].nil? %>
+		<% if a.user_id == current_user.id %>
+	    	<p><%= "#{index + 1})  #{a.body}" %></p>
+			<form action="/answers/<%= a.id %>/edit" method="GET">
+			<input type="submit" value="Edit">
+			</form>
 
-		<form action="/answers/<%= a.id %>/edit" method="GET">
-		<input type="submit" value="Edit">
-		</form>
-
-		<form action="/answers/<%= a.id %>" method="post">
-			<input type="hidden" name="_method" value="delete">
-			<input type="submit" value="Delete">
-		</form>
-
+			<form action="/answers/<%= a.id %>" method="post">
+				<input type="hidden" name="_method" value="delete">
+				<input type="submit" value="Delete">
+			</form>
+		<% else %>
+			<p><%= "#{index + 1})  #{a.body}" %></p>
+		<% end %>
+	<% else %>
+		<p><%= "#{index + 1})  #{a.body}" %></p>
 	<% end %>
 <% end %>
 
