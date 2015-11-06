@@ -1,16 +1,26 @@
 <% if session[:user_id].nil? %>
 	<h1>Welcome to Quora Clone! Please sign up or login.</h1>
-		<a href ="/signup">Sign Up!</a>
-		<a href ="/login">Log In!</a>
+
+	  <form action="/signup">
+      <input type="submit" value="Sign Up Here!">
+      </form>
+	  <form action="/login">
+      <input type="submit" value="Log In">
+      </form>
+
 <% end %>
-
-
 
 <h2>Latest Questions!</h2>
-
+<div>
 <% @question.each_with_index do |q, index| %>
-  <a href="/questions/<%= q.id %>">
-    <p><%= "#{index + 1})  #{q.body}" %></p>
-  </a>
-<% end %>
 
+   <% user = User.find_by(id: q.user_id) %>
+  <p><a href="/questions/<%= q.id %>">
+   <%= "#{index + 1})  #{q.body}" %></a> &nbsp asked by: <%= "#{user.username}" %></p>
+
+
+
+
+  
+<% end %>
+</div>

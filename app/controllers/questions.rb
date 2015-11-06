@@ -20,6 +20,7 @@ end
 get '/questions/:id' do
 	@user = current_user
 	@question = Question.find_by(id: params[:id])
+	@user_question = User.find_by(id: @question.user_id)
 	@answers = Answer.where(question_id: params[:id])
 	erb :'questions/show'
 end

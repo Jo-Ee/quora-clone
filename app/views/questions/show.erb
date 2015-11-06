@@ -1,15 +1,16 @@
-<h3><%= @question.body %></h3>
+<h2><%= @question.body %></h2>
+<h5>asked by <%= @user_question.username%></h5>
 
 <% if !session[:user_id].nil? %>
 	<% if @question.user_id == current_user.id%>
 
 		<form action="/questions/<%= @question.id %>/edit" method="GET">
-			<input type="submit" value="Edit">
+			<input type="submit" value="Edit Question">
 		</form>
 
 		<form action="/questions/<%= @question.id %>" method="post">
 			<input type="hidden" name="_method" value="delete">
-			<input type="submit" value="Delete">
+			<input type="submit" value="Delete Question">
 		</form>
 	<% else %>
 		<form action="/questions/<%= @question.id %>/answers/new" method="get">
@@ -18,7 +19,7 @@
 	<% end %> 
 <% end %>
 
-
+<h3>All Answers:</h3>
 
 <% @answers.each_with_index do |a, index| %>
 
@@ -26,18 +27,20 @@
 		<% if a.user_id == current_user.id %>
 	    	<p><%= "#{index + 1})  #{a.body}" %></p>
 			<form action="/answers/<%= a.id %>/edit" method="GET">
-			<input type="submit" value="Edit">
+			<input type="submit" value="Edit your answer">
 			</form>
 
 			<form action="/answers/<%= a.id %>" method="post">
 				<input type="hidden" name="_method" value="delete">
-				<input type="submit" value="Delete">
+				<input type="submit" value="Delete your answer">
 			</form>
 		<% else %>
-			<p><%= "#{index + 1})  #{a.body}" %></p>
+  			<% user = User.find_by(id: a.user_id) %>
+			<p><%= "#{index + 1})  #{a.body} &nbsp answered by #{user.username} at #{a.created_at}" %></p>
 		<% end %>
 	<% else %>
-		<p><%= "#{index + 1})  #{a.body}" %></p>
+		<% user = User.find_by(id: a.user_id) %>
+		<p><%= "#{index + 1})  #{a.body} &nbsp answered by #{user.username} at #{a.created_at}" %></p>
 	<% end %>
 <% end %>
 
