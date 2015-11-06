@@ -6,12 +6,13 @@ end
 
 #create the answer to the question
 post '/questions/:q_id/answers' do
+	@question = Question.find_by(id: params[:q_id]) 
 	@user = current_user
-	@answer = Answer.new(body:params[:body], question_id:params[:q_id],user_id:params[@user.id] )
+	@answer = Answer.new(body:params[:body], question_id:params[:q_id],user_id: @user.id )
 	if @answer.save
 		redirect to "/answers/#{@answer.id}"
 	else
-		erb :'questions/new'
+		erb :'answers/new'
 
 	end
 end

@@ -18,6 +18,7 @@ end
 
 #show the question
 get '/questions/:id' do
+	@user = current_user
 	@question = Question.find_by(id: params[:id])
 	@answers = Answer.where(question_id: params[:id])
 	erb :'questions/show'

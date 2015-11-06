@@ -1,20 +1,40 @@
 <h3><%= @question.body %></h3>
 
-<form action="/questions/<%= @question.id %>/edit" method="GET">
-<input type="submit" value="Edit">
-</form>
+<% if !session[:user_id].nil? %>
+	<% if @question.user_id == current_user.id%>
 
-<form action="/questions/<%= @question.id %>" method="post">
-	<input type="hidden" name="_method" value="delete">
-	<input type="submit" value="Delete">
-</form>
+		<form action="/questions/<%= @question.id %>/edit" method="GET">
+			<input type="submit" value="Edit">
+		</form>
 
-<form action="/questions/<%= @question.id %>/answers/new" method="get">
-	<input type="submit" value="Answer this question">
-</form>
+		<form action="/questions/<%= @question.id %>" method="post">
+			<input type="hidden" name="_method" value="delete">
+			<input type="submit" value="Delete">
+		</form>
+	<% else %>
+		<form action="/questions/<%= @question.id %>/answers/new" method="get">
+			<input type="submit" value="Answer this question">
+		</form>	
+	<% end %> 
+<% end %>
+
+
 
 <% @answers.each_with_index do |a, index| %>
     <p><%= "#{index + 1})  #{a.body}" %></p>
+
+	<% if a.user_id == current_user.id %>
+
+		<form action="/answers/<%= a.id %>/edit" method="GET">
+		<input type="submit" value="Edit">
+		</form>
+
+		<form action="/answers/<%= a.id %>" method="post">
+			<input type="hidden" name="_method" value="delete">
+			<input type="submit" value="Delete">
+		</form>
+
+	<% end %>
 <% end %>
 
 

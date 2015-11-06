@@ -1,7 +1,7 @@
 <h1>Ask a new question</h1>
 
-<% if @question && !question.errors.empty? %>
-	<% @question.error.full_messages.each do |e|%>
+<% if @question && !@question.errors.empty? %>
+	<% @question.errors.full_messages.each do |e|%>
 		<p><%= e %></p>
 	<% end %>
 <% end %>
