@@ -2,7 +2,7 @@ helpers AnswerHelper
 
 #render a new answer form
 get '/questions/:q_id/answers/new' do
-	find_question
+	@question = Question.find_by(id: params[:q_id]) 
 	erb :'answers/new'
 end
 

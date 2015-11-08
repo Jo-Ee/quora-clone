@@ -1,5 +1,8 @@
-# render a new form
+helpers QuestionHelper
+helpers AnswerVoteHelper
 
+
+# render a new form
 get '/questions/new' do
 	erb :'questions/new'
 end
@@ -19,21 +22,31 @@ end
 #show the question
 get '/questions/:id' do
 	@user = current_user
-	@question = Question.find_by(id: params[:id])
+	@question = find_question
 	@user_question = User.find_by(id: @question.user_id)
 	@answers = Answer.where(question_id: params[:id])
 	erb :'questions/show'
 end
 
+#to vote for answer
+post '/questions/:id' do
+	@question = find_question
+	@answervote = Answervote.new(params[:answervote])
+	@answervote.save!
+	redirect to "/questions/#{@question.id}"
+end
+
+
+
 #render edit form
 get '/questions/:id/edit' do
-	@question = Question.find_by(id: params[:id])
+	@question = find_question
 	erb :'questions/edit'
 end
 
 #update the question
 put '/questions/:id' do
-	@question = Question.find_by(id: params[:id])
+	@question = find_question
 	if @question.update(params[:question])
 		redirect to "/questions/#{@question.id}"
 	else

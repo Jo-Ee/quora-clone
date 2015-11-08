@@ -5,13 +5,10 @@
 
 		<% @question = Question.find_by(id: a.question_id) %>
 
-		<% # to check if the question still exist%>
+		<% # if question still exist, then show question %>
 		<% if !@question.nil? %>
 			<p>&nbsp &nbsp <a href="/questions/<%=@question.id%>">
 			Question: <%= @question.body %></a></p>
-
-		<% else %>
-			<p><i><font color="#ff0000">&nbsp &nbsp <%= "Question has been deleted by the question owner" %></font></i></p>
 		<% end %>
 
 
