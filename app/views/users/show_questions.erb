@@ -1,0 +1,7 @@
+<h2>Your questions:</h2>
+
+<% @question.each_with_index do |q, index| %>
+  <p><a href="/questions/<%= q.id %>">
+   <%= "#{index + 1})  #{q.body}" %></a>
+   </p>
+<% end %>

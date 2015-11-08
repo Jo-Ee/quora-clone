@@ -1,4 +1,5 @@
 <h2><%=@question.body %></h2>
+	<% @user_question = User.find_by(id: @question.user_id) %>
 <h5>asked by <%= @user_question.username%></h5>
 
 <h2>Answer:</h2>

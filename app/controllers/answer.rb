@@ -3,7 +3,6 @@ helpers AnswerHelper
 #render a new answer form
 get '/questions/:q_id/answers/new' do
 	find_question
-	@user_question = User.find_by(id: @question.user_id)
 	erb :'answers/new'
 end
 

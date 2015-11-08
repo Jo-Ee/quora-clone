@@ -1,0 +1,18 @@
+<h2>Your answers:</h2>
+
+<% @answer.each_with_index do |a, index| %>
+	<p><b><%="#{index+1}) #{a.body}" %></b></p>
+
+		<% @question = Question.find_by(id: a.question_id) %>
+
+		<% # to check if the question still exist%>
+		<% if !@question.nil? %>
+			<p>&nbsp &nbsp <a href="/questions/<%=@question.id%>">
+			Question: <%= @question.body %></a></p>
+
+		<% else %>
+			<p><i><font color="#ff0000">&nbsp &nbsp <%= "Question has been deleted by the question owner" %></font></i></p>
+		<% end %>
+
+
+<% end %>
