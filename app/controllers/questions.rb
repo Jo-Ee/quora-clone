@@ -1,6 +1,4 @@
 helpers QuestionHelper
-helpers AnswerVoteHelper
-
 
 # render a new form
 get '/questions/new' do
