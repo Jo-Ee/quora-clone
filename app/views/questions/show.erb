@@ -40,13 +40,25 @@
   			<% user = User.find_by(id: a.user_id) %>
 			<p><%= "#{index + 1})  #{a.body} &nbsp (#{user.username})" %></p>
 
+			<!-- buttons only appear if user has not voted -->
+				<% session = [a.id, user.id] %>
+				<% session_string = session.join(",").to_s %>
 
-			<div class="vote_buttons">
+			<% if Answervote.find_by(answersession: session_string).nil? %>
+
+				<div class="vote_buttons">
+	
 			<!-- upvote submit button -->
 				<form action="/questions/<%= a.question_id %>" method="post">
 					<input type="hidden" name=answervote[value] value=1>
 					<input type="hidden" name=answervote[answer_id] value="<%= a.id %>">
 					<input type="hidden" name=answervote[user_id] value="<%= a.user_id%>">
+
+					<% answ_sess_arr = Array.new %>
+					<% answ_sess_arr << a.id << a.user_id %>
+					<% answ_sess = answ_sess_arr.join(",").to_s %>
+
+					<input type="hidden" name=answervote[answersession] value="<%= answ_sess %>">
 					<input type="submit" value="Upvote">
 				</form>
 
@@ -55,12 +67,17 @@
 				<form action="/questions/<%= a.question_id %>" method="post">
 					<input type="hidden" name=answervote[value] value=-1>
 					<input type="hidden" name=answervote[answer_id] value="<%= a.id %>">
+					<% answ_sess_arr = Array.new %>
+					<% answ_sess_arr << a.id << a.user_id %>
+					<% answ_sess = answ_sess_arr.join(",").to_s %>
+
+					<input type="hidden" name=answervote[answersession] value="<%= answ_sess %>">
 					<input type="hidden" name=answervote[user_id] value="<%= a.user_id%>">
 					<input type="submit" value="Downvote">
 				</form>
-				<% end %>
-			</div>
+			<% end %>
 		<% end %>
+			</div>
 	<% else %>
 		<% user = User.find_by(id: a.user_id) %>
 		<p><%= "#{index + 1})  #{a.body} &nbsp (#{user.username})" %></p>
