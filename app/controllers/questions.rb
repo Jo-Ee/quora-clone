@@ -36,7 +36,6 @@ end
 
 #to vote for question
 post '/questions/:id/vote' do
-	@user = current_user
 	@question = find_question
 	@questionvote = Questionvote.new(params[:questionvote])
 	@questionvote.save
