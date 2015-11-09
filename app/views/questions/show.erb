@@ -2,7 +2,8 @@
 <h5>asked by <%= @user_question.username%></h5>
 
 <% if !session[:user_id].nil? %>
-	<% if @question.user_id == current_user.id%>
+
+	<% if @question.user_id == current_user.id %>
 
 		<form action="/questions/<%= @question.id %>/edit" method="GET">
 			<input type="submit" value="Edit Question">
@@ -14,9 +15,41 @@
 		</form>
 
 	<% else %>
+
 		<form action="/questions/<%= @question.id %>/answers/new" method="get">
 			<input type="submit" value="Answer this question">
-		</form>	
+		</form>
+
+			<!-- create question voting session -->
+			<% ques_session = "#{@question.id},#{current_user.id}" %>
+
+		<!-- show question vote buttons if user havent vote -->
+		<% if Questionvote.find_by(questionsession: ques_session).nil? %>
+			
+			<!-- upvote submit button -->
+			<form action="/questions/<%= @question.id %>/vote" method="post">
+
+				<input type="hidden" name=questionvote[value] value=1>
+				<input type="hidden" name=questionvote[question_id] value="<%= @question.id %>">
+				<input type="hidden" name=questionvote[user_id] value="<%= current_user.id%>">
+				<input type="hidden" name=questionvote[questionsession] value="<%= ques_session %>"> <!-- log session here -->
+				<input type="submit" value="Upvote">
+
+			</form>
+
+
+		<!-- downvote submit button -->
+		<form action="/questions/<%= @question.id %>/vote" method="post">
+
+			<input type="hidden" name=questionvote[value] value=-1>
+			<input type="hidden" name=questionvote[question_id] value="<%= @question.id %>">
+			<input type="hidden" name=questionvote[user_id] value="<%= current_user.id %>"
+			<input type="hidden" name=questionvote[questionsession] value="<%= ques_session %>"> <!-- log session here -->
+
+			<input type="submit" value="Downvote">
+		</form>
+		<% end %>
+
 	<% end %> 
 <% end %>
 
@@ -27,6 +60,7 @@
 	<% if !session[:user_id].nil? %>
 
 		<% if a.user_id == current_user.id %>
+
 	    	<p><%= "#{index + 1})  #{a.body}" %></p>
 			<form action="/answers/<%= a.id %>/edit" method="GET">
 				<input type="submit" value="Edit your answer">
@@ -36,44 +70,40 @@
 				<input type="hidden" name="_method" value="delete">
 				<input type="submit" value="Delete your answer">
 			</form>
+
 		<% else %>
+
   			<% user = User.find_by(id: a.user_id) %>
 			<p><%= "#{index + 1})  #{a.body} &nbsp (#{user.username})" %></p>
 
-			<!-- buttons only appear if user has not voted -->
-				<% session = [a.id, user.id] %>
-				<% session_string = session.join(",").to_s %>
+			<!-- create answer voting session -->
+			<% answ_session = "#{a.id},#{current_user.id}"%>
 
-			<% if Answervote.find_by(answersession: session_string).nil? %>
+			<!-- show answer vote buttons if user havent vote -->
+			<% if Answervote.find_by(answersession: answ_session).nil? %>
 
 				<div class="vote_buttons">
 	
-			<!-- upvote submit button -->
+				<!-- upvote submit button -->
 				<form action="/questions/<%= a.question_id %>" method="post">
 					<input type="hidden" name=answervote[value] value=1>
 					<input type="hidden" name=answervote[answer_id] value="<%= a.id %>">
-					<input type="hidden" name=answervote[user_id] value="<%= a.user_id%>">
-
-					<% answ_sess_arr = Array.new %>
-					<% answ_sess_arr << a.id << a.user_id %>
-					<% answ_sess = answ_sess_arr.join(",").to_s %>
-
-					<input type="hidden" name=answervote[answersession] value="<%= answ_sess %>">
+					<input type="hidden" name=answervote[user_id] value="<%= current_user.id%>">
+					<input type="hidden" name=answervote[answersession] value="<%= answ_session %>">
 					<input type="submit" value="Upvote">
+
 				</form>
 
 
-			<!-- downvote submit button -->
+				<!-- downvote submit button -->
 				<form action="/questions/<%= a.question_id %>" method="post">
+					
 					<input type="hidden" name=answervote[value] value=-1>
 					<input type="hidden" name=answervote[answer_id] value="<%= a.id %>">
-					<% answ_sess_arr = Array.new %>
-					<% answ_sess_arr << a.id << a.user_id %>
-					<% answ_sess = answ_sess_arr.join(",").to_s %>
-
-					<input type="hidden" name=answervote[answersession] value="<%= answ_sess %>">
-					<input type="hidden" name=answervote[user_id] value="<%= a.user_id%>">
+					<input type="hidden" name=answervote[user_id] value="<%= current_user.id%>">
+					<input type="hidden" name=answervote[answersession] value="<%= answ_session %>">
 					<input type="submit" value="Downvote">
+
 				</form>
 			<% end %>
 		<% end %>
