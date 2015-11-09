@@ -1,5 +1,7 @@
 <h2><%= @question.body %></h2>
 <h5>asked by <%= @user_question.username%></h5>
+<p><i><%= Questionvote.where(question_id: @question.id, value: 1).count%> Upvote</i></p>
+<p><i><%= Questionvote.where(question_id: @question.id, value: -1).count%> Downvote</i></p>
 
 <% if !session[:user_id].nil? %>
 
@@ -38,6 +40,7 @@
 			</form>
 
 
+
 		<!-- downvote submit button -->
 		<form action="/questions/<%= @question.id %>/vote" method="post">
 
@@ -48,6 +51,7 @@
 
 			<input type="submit" value="Downvote">
 		</form>
+
 		<% end %>
 
 	<% end %> 
@@ -57,11 +61,16 @@
 
 <% @answers.each_with_index do |a, index| %>
 
+	<% a_upvote = Answervote.where(answer_id: a.id, value: 1).count%>
+	<% a_downvote =  Answervote.where(answer_id: a.id, value:-1).count%>
+
 	<% if !session[:user_id].nil? %>
 
 		<% if a.user_id == current_user.id %>
 
 	    	<p><%= "#{index + 1})  #{a.body}" %></p>
+			<p><i><%= a_upvote %> Upvote</i></p>
+			<p><i><%= a_downvote %> Downcote</i></p>
 			<form action="/answers/<%= a.id %>/edit" method="GET">
 				<input type="submit" value="Edit your answer">
 			</form>
@@ -71,11 +80,14 @@
 				<input type="submit" value="Delete your answer">
 			</form>
 
+	
+
 		<% else %>
 
   			<% user = User.find_by(id: a.user_id) %>
 			<p><%= "#{index + 1})  #{a.body} &nbsp (#{user.username})" %></p>
-
+			<p><i><%= a_upvote %> Upvote</i></p>
+			<p><i><%= a_downvote %> Downvote</i></p>
 			<!-- create answer voting session -->
 			<% answ_session = "#{a.id},#{current_user.id}"%>
 

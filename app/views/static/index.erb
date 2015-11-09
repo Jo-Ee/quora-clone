@@ -4,7 +4,8 @@
 
    <% user = User.find_by(id: q.user_id) %>
   <p><a href="/questions/<%= q.id %>">
-   <%= "#{index + 1})  #{q.body}" %></a> &nbsp &nbsp (<%= "#{user.username}" %>)</p>
-  
+   <%= "#{index + 1})  #{q.body}" %></a> &nbsp &nbsp (<%= "#{user.username}" %>) &nbsp &nbsp
+ 	<i><%= Questionvote.where(question_id: q.id, value: 1).count%> Upvote</i>
+	<i><%= Questionvote.where(question_id: q.id, value: -1).count%> Downvote</i></p>
 <% end %>
 </div>
